@@ -66,11 +66,17 @@ public:
 		SizeX = ConsoleSizeX;
 		SizeY = ConsoleSizeY;
 
+		SMALL_RECT zeroWindow = { 0, 0, 0, 0 };
+
+		SetConsoleWindowInfo(hConsoleOut, TRUE, &zeroWindow);
+		SetConsoleScreenBufferSize(hConsoleOut, { 1, 1 });
+
 		rectWindow = { 0, 0, (short)SizeX - 1, (short)SizeY - 1 };
-		if (!SetConsoleWindowInfo(hConsoleOut, TRUE, &rectWindow))
-			return -1;
+		
 		if (!SetConsoleScreenBufferSize(hConsoleOut, { (short)SizeX, (short)SizeY }))
 			return -2;
+		if (!SetConsoleWindowInfo(hConsoleOut, TRUE, &rectWindow))
+			return -1;
 
 		ScreenBuffer = new CHAR_INFO[SizeX * SizeY];
 		NullingScreenBuffer();
